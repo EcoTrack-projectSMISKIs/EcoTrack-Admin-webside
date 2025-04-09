@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import {
+  Table, TableBody, TableCell, TableContainer,
+  TableHead, TableRow, Paper, Button, TextField, Typography, Box, Modal
+} from "@mui/material";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -13,16 +17,19 @@ const Users = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("http://localhost:5003/api/users");
+      const token = localStorage.getItem("token");
+      const res = await axios.get("http://localhost:5003/api/users", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setUsers(res.data);
     } catch (err) {
-      console.error("Error fetching users:", err);
+      console.error("Error fetching users:", err.response?.data || err.message);
     }
   };
 
   const filteredUsers = users.filter((u) =>
     (u.name || "").toLowerCase().includes(search.toLowerCase()) ||
-    u.email.toLowerCase().includes(search.toLowerCase())
+    (u.email || "").toLowerCase().includes(search.toLowerCase())
   );
 
   const handleEdit = (user) => {
@@ -32,7 +39,10 @@ const Users = () => {
 
   const handleUpdate = async () => {
     try {
-      await axios.put(`http://localhost:5003/api/users/${editingUser}`, formData);
+      const token = localStorage.getItem("token");
+      await axios.put(`http://localhost:5003/api/users/${editingUser}`, formData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       alert("User updated!");
       setEditingUser(null);
       fetchUsers();
@@ -44,7 +54,10 @@ const Users = () => {
   const handleDelete = async (id) => {
     if (confirm("Are you sure you want to delete this user?")) {
       try {
-        await axios.delete(`http://localhost:5003/api/users/${id}`);
+        const token = localStorage.getItem("token");
+        await axios.delete(`http://localhost:5003/api/users/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setUsers(users.filter((u) => u._id !== id));
       } catch (err) {
         alert("Delete failed");
@@ -53,79 +66,101 @@ const Users = () => {
   };
 
   return (
-    <section className="content-section">
-      <div className="header-container">
-        <h2>User Management</h2>
-        <input
-          type="text"
-          placeholder="Search users..."
+    <Box sx={{ padding: "24px" }}>
+      <Typography variant="h4" gutterBottom fontWeight={600}>
+        User Management
+      </Typography>
+
+      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+        <TextField
+          label="Search users..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          style={{ padding: "8px", width: "200px", borderRadius: "4px", border: "1px solid #ccc" }}
+          variant="outlined"
+          size="small"
+          sx={{ width: "300px" }}
         />
-      </div>
+      </Box>
 
-      <table className="user-table">
-        <thead>
-          <tr>
-            <th>Name</th><th>Email</th><th>Status</th><th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredUsers.map((user) => (
-            <tr key={user._id}>
-              <td>{user.name || "—"}</td>
-              <td>{user.email}</td>
-              <td>{user.username ? "Active" : "Pending"}</td>
-              <td className="user-actions">
-                <button onClick={() => handleEdit(user)}>Edit</button>
-                <button onClick={() => handleDelete(user._id)}>Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <TableContainer component={Paper} sx={{ borderRadius: 2, boxShadow: 3 }}>
+        <Table>
+          <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
+            <TableRow>
+              <TableCell><strong>Name</strong></TableCell>
+              <TableCell><strong>Email</strong></TableCell>
+              <TableCell><strong>Status</strong></TableCell>
+              <TableCell align="center"><strong>Actions</strong></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {filteredUsers.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={4} align="center">
+                  <Typography variant="body1" sx={{ py: 2 }}>No users found.</Typography>
+                </TableCell>
+              </TableRow>
+            ) : (
+              filteredUsers.map((user) => (
+                <TableRow key={user._id} hover>
+                  <TableCell>{user.name || "—"}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.username ? "Active" : "Pending"}</TableCell>
+                  <TableCell align="center">
+                    <Button size="small" onClick={() => handleEdit(user)} sx={{ mr: 1 }} variant="outlined">Edit</Button>
+                    <Button size="small" color="error" onClick={() => handleDelete(user._id)} variant="outlined">
+                      Delete
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
-      {/* Edit Modal */}
-      {editingUser && (
-        <div style={modalStyles.overlay}>
-          <div style={modalStyles.modal}>
-            <h3>Edit User</h3>
-            <input
-              type="text"
-              placeholder="Name"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              style={modalStyles.input}
-            />
-            <input
-              type="email"
-              placeholder="Email"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              style={modalStyles.input}
-            />
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <button onClick={handleUpdate}>Update</button>
-              <button onClick={() => setEditingUser(null)}>Cancel</button>
-            </div>
-          </div>
-        </div>
-      )}
-    </section>
+      <Modal
+        open={!!editingUser}
+        onClose={() => setEditingUser(null)}
+        aria-labelledby="edit-user-modal"
+      >
+        <Box sx={modalStyles.box}>
+          <Typography id="edit-user-modal" variant="h6" gutterBottom>
+            Edit User
+          </Typography>
+          <TextField
+            label="Name"
+            fullWidth
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            label="Email"
+            fullWidth
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            sx={{ mb: 2 }}
+          />
+          <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }}>
+            <Button variant="contained" onClick={handleUpdate}>Update</Button>
+            <Button variant="outlined" color="error" onClick={() => setEditingUser(null)}>Cancel</Button>
+          </Box>
+        </Box>
+      </Modal>
+    </Box>
   );
 };
 
 const modalStyles = {
-  overlay: {
-    position: "fixed", top: 0, left: 0, width: "100%", height: "100%",
-    backgroundColor: "rgba(0,0,0,0.5)", display: "flex", justifyContent: "center", alignItems: "center"
-  },
-  modal: {
-    background: "white", padding: "20px", borderRadius: "10px", minWidth: "300px"
-  },
-  input: {
-    width: "100%", padding: "10px", margin: "10px 0", border: "1px solid #ccc", borderRadius: "5px"
+  box: {
+    position: "absolute",
+    top: "50%", left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    backgroundColor: "white",
+    borderRadius: 2,
+    boxShadow: 24,
+    padding: 4,
   }
 };
 
