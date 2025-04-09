@@ -2,10 +2,10 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import adminRoutes from './routes/adminRoutes.js';
+import newsRoutes from "./routes/newsRoutes.js";
 
-// Load environment variables
 dotenv.config();
-
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -17,26 +17,11 @@ mongoose.connect(process.env.MONGO_URI, {
 }).then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 
-// Define User Schema
-const UserSchema = new mongoose.Schema({
-   name: { type: String, required: true },
-   username: { type: String, required: true, unique: true },
-   phone: { type: String, required: true, unique: true },
-   email: { type: String, required: true, unique: true },
-   password: { type: String, required: true }
-}, { timestamps: true });
+// Register Routes
+app.use('/api', adminRoutes);
 
-const User = mongoose.model('User', UserSchema);
-
-// Route to fetch all users
-app.get('/api/users', async (req, res) => {
-  try {
-    const users = await User.find();
-    res.json(users);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
+// news
+app.use("/api/news", newsRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5003;
