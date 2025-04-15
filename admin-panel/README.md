@@ -6,7 +6,7 @@ A React + Vite-powered admin dashboard for managing users, news, and monitoring 
 
 ##  Tech Stack
 
-- ⚛ **React** (Vite)
+-  **React** (Vite)
 -  **Tailwind CSS**
 -  **Recharts** – for bar chart visualization
 -  **Axios** – for API calls
