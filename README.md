@@ -49,8 +49,8 @@ Create a `.env` file:
 
 ```env
 PORT=5003
-MONGO_URI=your_mongodb_uri
-JWT_SECRET=your_secret_key
+MONGO_URI=ask_luis_for_the_uri
+JWT_SECRET=12345678
 ```
 
 Run the backend:
