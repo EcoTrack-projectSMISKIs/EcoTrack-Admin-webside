@@ -56,22 +56,55 @@ const News = () => {
   const formatDate = (dateStr) => new Date(dateStr).toLocaleString();
 
   return (
-    <div style={{ padding: 24 }}>
-      <h2 style={{ fontSize: 28, fontWeight: "bold", marginBottom: 16 }}>News and Updates</h2>
+    <div style={{ padding: 32 }}>
+      <h2 style={{ fontSize: 26, fontWeight: "bold", marginBottom: 16, color: "#0f172a" }}>
+        News & Updates
+      </h2>
 
-      <div style={{ textAlign: "right", marginBottom: 16 }}>
-        <button style={styles.addBtn} onClick={() => { setShowModal(true); setFormData({ title: "", content: "", image: "" }); setEditingNewsId(null); }}>Add News</button>
+      <div style={{ textAlign: "right", marginBottom: 20 }}>
+        <button
+          onClick={() => {
+            setShowModal(true);
+            setFormData({ title: "", content: "", image: "" });
+            setEditingNewsId(null);
+          }}
+          style={{
+            backgroundColor: "#0ea5e9",
+            color: "#fff",
+            padding: "10px 16px",
+            borderRadius: "8px",
+            border: "none",
+            cursor: "pointer",
+            fontSize: "14px",
+          }}
+        >
+          + Add News
+        </button>
       </div>
 
       {newsList.map((news) => (
-        <div key={news._id} style={styles.card}>
+        <div key={news._id} style={{
+          background: "#fff",
+          borderRadius: "12px",
+          padding: "20px",
+          marginBottom: "20px",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          gap: "24px"
+        }}>
           <div style={{ flex: 1 }}>
-            <h3>{news.title}</h3>
-            <p>{news.content}</p>
-            {news.image && <img src={news.image} alt="News" style={{ maxWidth: 200, marginTop: 10 }} />}
-            <p style={{ fontSize: 12, color: "#555" }}>Posted: {formatDate(news.createdAt)}</p>
+            <h3 style={{ margin: 0 }}>{news.title}</h3>
+            <p style={{ color: "#475569" }}>{news.content}</p>
+            {news.image && (
+              <img src={news.image} alt="News" style={{ maxWidth: "200px", borderRadius: "8px", marginTop: "10px" }} />
+            )}
+            <p style={{ fontSize: "12px", color: "#64748b", marginTop: "10px" }}>
+              Posted: {formatDate(news.createdAt)}
+            </p>
           </div>
-          <div style={styles.actions}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
             <button onClick={() => openEdit(news)} style={styles.editBtn}>Edit</button>
             <button onClick={() => handleDelete(news._id)} style={styles.deleteBtn}>Delete</button>
           </div>
@@ -81,16 +114,16 @@ const News = () => {
       {showModal && (
         <div style={styles.modalOverlay}>
           <div style={styles.modal}>
-            <h3>{editingNewsId ? "Edit News" : "Add News or Updates"}</h3>
+            <h3>{editingNewsId ? "Edit News" : "Add News"}</h3>
             <input
               type="text"
-              placeholder="TITLE"
+              placeholder="Title"
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
               style={styles.input}
             />
             <textarea
-              placeholder="Insert content...."
+              placeholder="Content"
               value={formData.content}
               onChange={(e) => setFormData({ ...formData, content: e.target.value })}
               style={styles.textarea}
@@ -102,9 +135,11 @@ const News = () => {
               onChange={(e) => setFormData({ ...formData, image: e.target.value })}
               style={styles.input}
             />
-            <div style={styles.modalActions}>
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
               <button onClick={() => setShowModal(false)} style={styles.cancelBtn}>Cancel</button>
-              <button onClick={handleSubmit} style={styles.confirmBtn}>{editingNewsId ? "Update" : "Confirm"}</button>
+              <button onClick={handleSubmit} style={styles.confirmBtn}>
+                {editingNewsId ? "Update" : "Post"}
+              </button>
             </div>
           </div>
         </div>
@@ -114,98 +149,73 @@ const News = () => {
 };
 
 const styles = {
-  card: {
-    background: "#eef6ee",
-    border: "1px solid #ccc",
-    borderRadius: "8px",
-    padding: "16px",
-    marginBottom: "16px",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-  },
-  actions: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "8px",
-    marginLeft: "20px",
-  },
-  addBtn: {
-    backgroundColor: "#275c6c",
-    color: "white",
-    padding: "10px 16px",
-    borderRadius: "6px",
-    border: "none",
-    cursor: "pointer",
-  },
-  editBtn: {
-    backgroundColor: "#275c6c",
-    color: "white",
-    padding: "6px 12px",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
-  deleteBtn: {
-    backgroundColor: "#f28c8c",
-    color: "white",
-    padding: "6px 12px",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
-  modalOverlay: {
-    position: "fixed",
-    top: 0, left: 0, width: "100%", height: "100%",
-    backgroundColor: "rgba(0,0,0,0.4)",
-    display: "flex", justifyContent: "center", alignItems: "center",
-  },
-  modal: {
-    backgroundColor: "#f3f3f3",
-    padding: "30px",
-    borderRadius: "10px",
-    width: "500px",
-    maxWidth: "90%",
-    boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
-  },
   input: {
     width: "100%",
     padding: "10px",
     marginBottom: "12px",
     borderRadius: "6px",
     border: "1px solid #ccc",
-    fontSize: "16px",
+    fontSize: "14px",
   },
   textarea: {
     width: "100%",
     padding: "10px",
-    marginBottom: "20px",
+    marginBottom: "12px",
     borderRadius: "6px",
     border: "1px solid #ccc",
-    fontSize: "16px",
+    fontSize: "14px",
     resize: "vertical",
-    height: 100
+    minHeight: "100px",
   },
-  modalActions: {
-    display: "flex",
-    justifyContent: "flex-end",
-    gap: "10px",
+  editBtn: {
+    backgroundColor: "#3b82f6",
+    color: "white",
+    border: "none",
+    borderRadius: "6px",
+    padding: "6px 12px",
+    cursor: "pointer",
+  },
+  deleteBtn: {
+    backgroundColor: "#ef4444",
+    color: "white",
+    border: "none",
+    borderRadius: "6px",
+    padding: "6px 12px",
+    cursor: "pointer",
   },
   cancelBtn: {
-    backgroundColor: "#f28c8c",
+    backgroundColor: "#94a3b8",
     color: "white",
-    padding: "8px 16px",
-    borderRadius: "6px",
     border: "none",
+    borderRadius: "6px",
+    padding: "8px 14px",
     cursor: "pointer",
   },
   confirmBtn: {
-    backgroundColor: "#275c6c",
+    backgroundColor: "#0ea5e9",
     color: "white",
-    padding: "8px 16px",
-    borderRadius: "6px",
     border: "none",
+    borderRadius: "6px",
+    padding: "8px 14px",
     cursor: "pointer",
+  },
+  modalOverlay: {
+    position: "fixed",
+    top: 0, left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0,0,0,0.4)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modal: {
+    backgroundColor: "#fff",
+    padding: "30px",
+    borderRadius: "12px",
+    width: "500px",
+    maxWidth: "90%",
+    boxShadow: "0 4px 16px rgba(0,0,0,0.1)",
   },
 };
 

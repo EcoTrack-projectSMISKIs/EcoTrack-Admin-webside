@@ -50,28 +50,31 @@ const Dashboard = () => {
   ];
 
   return (
-    <div style={{ padding: 24 }}>
-      <h2 style={{ fontSize: 28, fontWeight: "bold", marginBottom: 24 }}>Dashboard Overview</h2>
+    <div style={{ padding: "32px" }}>
+      <h2 style={{ fontSize: "26px", fontWeight: 700, color: "#0f172a", marginBottom: "24px" }}>
+        Dashboard Overview
+      </h2>
 
-      <div style={{ display: "flex", gap: 32, marginBottom: 40 }}>
-        <div style={styles.card}>
-          <h3>Total Users</h3>
-          <p style={styles.value}>{totalUsers}</p>
+      <div style={{ display: "flex", gap: "24px", marginBottom: "40px" }}>
+        <div style={styles.statCard}>
+          <h4 style={styles.statLabel}>Total Users</h4>
+          <p style={styles.statValue}>{totalUsers}</p>
         </div>
-        <div style={styles.card}>
-          <h3>Latest News Posts</h3>
-          <p style={styles.value}>{latestNews.length}</p>
+        <div style={styles.statCard}>
+          <h4 style={styles.statLabel}>Latest News Posts</h4>
+          <p style={styles.statValue}>{latestNews.length}</p>
         </div>
       </div>
 
-      <div style={{ height: 300 }}>
+      <div style={{ height: "320px", background: "#fff", padding: "24px", borderRadius: "12px", boxShadow: "0 2px 10px rgba(0,0,0,0.05)" }}>
+        <h3 style={{ marginBottom: "16px", fontSize: "18px", color: "#334155" }}>Activity Chart</h3>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis allowDecimals={false} />
             <Tooltip />
-            <Bar dataKey="count" fill="#275c6c" radius={[6, 6, 0, 0]} />
+            <Bar dataKey="count" fill="#0ea5e9" radius={[6, 6, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -80,17 +83,22 @@ const Dashboard = () => {
 };
 
 const styles = {
-  card: {
+  statCard: {
     flex: 1,
-    background: "#eef6ee",
-    border: "1px solid #ccc",
-    borderRadius: 8,
-    padding: 20,
+    backgroundColor: "#f1f5f9",
+    borderRadius: "12px",
+    padding: "20px",
+    boxShadow: "0 1px 4px rgba(0,0,0,0.05)",
   },
-  value: {
-    fontSize: 32,
+  statLabel: {
+    fontSize: "16px",
+    color: "#64748b",
+    marginBottom: "8px",
+  },
+  statValue: {
+    fontSize: "32px",
     fontWeight: "bold",
-    marginTop: 10,
+    color: "#0f172a",
   },
 };
 

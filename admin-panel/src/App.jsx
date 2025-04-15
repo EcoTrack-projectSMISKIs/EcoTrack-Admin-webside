@@ -1,85 +1,31 @@
 import { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import Login from "./pages/Login";
-import Dashboard from "./components/Dashboard";
-import Users from "./components/Users";
+import { Routes, Route } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
-import News from "./components/News";
-import Settings from "./components/Settings";
+import Dashboard from "./pages/Dashboard";
+import News from "./pages/News";
+import Users from "./pages/Users";
+import Settings from "./pages/Settings";
+import Login from "./pages/Login";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
 
-  const Layout = ({ children }) => (
-    <div style={{ display: "flex", minHeight: "100vh" }}>
-      <Sidebar />
-      <div style={{ flex: 1, padding: "24px" }}>{children}</div>
-    </div>
-  );
+  if (!isAuthenticated) {
+    return <Login setIsAuthenticated={setIsAuthenticated} />;
+  }
 
   return (
-    <Router>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            isAuthenticated ? (
-              <Navigate to="/dashboard" />
-            ) : (
-              <Login setIsAuthenticated={setIsAuthenticated} />
-            )
-          }
-        />
-        <Route
-          path="/dashboard"
-          element={
-            isAuthenticated ? (
-              <Layout>
-                <Dashboard />
-              </Layout>
-            ) : (
-              <Navigate to="/" />
-            )
-          }
-        />
-        <Route
-          path="/users"
-          element={
-            isAuthenticated ? (
-              <Layout>
-                <Users />
-              </Layout>
-            ) : (
-              <Navigate to="/" />
-            )
-          }
-        />
-        <Route
-          path="/news"
-          element={
-            isAuthenticated ? (
-              <Layout>
-                <News />
-              </Layout>
-            ) : (
-              <Navigate to="/news" />
-            )
-          }
-        />
-        <Route
-  path="/settings"
-  element={
-    isAuthenticated ? (
-      <Layout>
-        <Settings />
-      </Layout>
-    ) : (
-      <Navigate to="/" />
-    )
-  }
-/>
-      </Routes>
-    </Router>
+    <div style={{ display: "flex", height: "100vh", backgroundColor: "#f1f5f9", fontFamily: "Segoe UI, sans-serif" }}>
+      <Sidebar />
+      <main style={{ flex: 1, overflowY: "auto", padding: "32px" }}>
+        <Routes>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/news" element={<News />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/settings" element={<Settings />} />
+        </Routes>
+      </main>
+    </div>
   );
 }
 
