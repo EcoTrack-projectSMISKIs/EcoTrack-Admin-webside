@@ -111,8 +111,4 @@ src/
 
 Built by the EcoTrack Backend Team.
 
----
 
-##  License
-
-This project is licensed under [MIT](LICENSE).
