@@ -1,10 +1,10 @@
-import express from "express";
-import {
+const express = require("express");
+const {
   getAllNews,
   addNews,
   deleteNews,
   updateNews,
-} from "../controllers/newsController.js";
+} = require("../controllers/newsController");
 
 const router = express.Router();
 
@@ -13,4 +13,4 @@ router.post("/", addNews);
 router.put("/:id", updateNews);
 router.delete("/:id", deleteNews);
 
-export default router;
+module.exports = router;

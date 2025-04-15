@@ -1,7 +1,7 @@
-import News from "../models/newsModel.js";
+const News = require("../models/newsModel");
 
-// Get all news (sorted newest first)
-export const getAllNews = async (req, res) => {
+// 📄 Get all news
+const getAllNews = async (req, res) => {
   try {
     const news = await News.find().sort({ createdAt: -1 });
     res.json(news);
@@ -10,8 +10,8 @@ export const getAllNews = async (req, res) => {
   }
 };
 
-// Add news
-export const addNews = async (req, res) => {
+// ➕ Add news
+const addNews = async (req, res) => {
   const { title, content, image } = req.body;
   try {
     const newPost = await News.create({ title, content, image });
@@ -21,8 +21,8 @@ export const addNews = async (req, res) => {
   }
 };
 
-// Update news
-export const updateNews = async (req, res) => {
+// ✏️ Update news
+const updateNews = async (req, res) => {
   const { title, content, image } = req.body;
   try {
     const updated = await News.findByIdAndUpdate(
@@ -36,12 +36,19 @@ export const updateNews = async (req, res) => {
   }
 };
 
-// Delete news
-export const deleteNews = async (req, res) => {
+// ❌ Delete news
+const deleteNews = async (req, res) => {
   try {
     await News.findByIdAndDelete(req.params.id);
     res.json({ message: "News deleted" });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
+};
+
+module.exports = {
+  getAllNews,
+  addNews,
+  updateNews,
+  deleteNews,
 };

@@ -27,243 +27,65 @@ const Login = ({ setIsAuthenticated }) => {
   };
 
   return (
-    <div style={styles.container}>
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        style={styles.leftPanel}
-      >
-        <div style={styles.logoContainer}>
-          <img src="/Ellipse 1.png" alt="BATELEC logo" style={{ height: 100 }} />
-        </div>
-        <h2 style={styles.title}>BATELEC | Admin Side for EcoTrack</h2>
-        <p style={styles.subtitle}>User Management and Reports Tracking</p>
-        <form onSubmit={handleLogin} style={styles.form}>
-          <h3 style={styles.formTitle}>Sign in</h3>
-          <p style={styles.formSubtitle}>For <strong>Employee Access</strong> only</p>
+    <div className="flex min-h-screen">
+      {/* Left Panel */}
+      <div className="hidden md:flex w-1/2 bg-blue-900 text-white flex-col justify-center items-center p-10">
+        <img src="/Ellipse 1.png" alt="BATELEC logo" className="h-28 mb-6" />
+        <h1 className="text-3xl font-bold mb-2 text-center">EcoTrack Admin Panel</h1>
+        <p className="text-center text-gray-200">Manage users, monitor reports, and ensure sustainability</p>
+      </div>
 
-          <div style={styles.inputContainer}>
-            <FiMail style={styles.icon} />
-            <input
-              type="email"
-              placeholder="Enter your email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              style={styles.input}
-              autoComplete="email"
-            />
-          </div>
+      {/* Right Panel - Form */}
+      <div className="flex flex-1 justify-center items-center bg-gray-50">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="w-full max-w-md p-8 bg-white rounded-lg shadow-md"
+        >
+          <h2 className="text-2xl font-semibold text-gray-800 mb-1">Sign in to your account</h2>
+          <p className="text-sm text-gray-500 mb-6">Employee access only</p>
 
-          <div style={styles.inputContainer}>
-            <FiLock style={styles.icon} />
-            <input
-              type="password"
-              placeholder="Enter your Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              style={styles.input}
-              autoComplete="current-password"
-            />
-          </div>
+          <form onSubmit={handleLogin} className="space-y-5">
+            <div className="flex items-center border rounded px-3 py-2 bg-white">
+              <FiMail className="text-gray-500 mr-2" />
+              <input
+                type="email"
+                placeholder="Email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full outline-none bg-transparent"
+                autoComplete="email"
+              />
+            </div>
 
-          {error && <div style={styles.error}>{error}</div>}
+            <div className="flex items-center border rounded px-3 py-2 bg-white">
+              <FiLock className="text-gray-500 mr-2" />
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="w-full outline-none bg-transparent"
+                autoComplete="current-password"
+              />
+            </div>
 
-          <div style={styles.footerRow}>
-            <label style={{ color: '#112F3E' }}>
-              <input type="checkbox" style={{ marginRight: 6 }} /> Remember me
-            </label>
-            <a href="#" style={{ fontSize: 12 }}>Forgot Password?</a>
-          </div>
+            {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
 
-          <button type="submit" style={styles.button}>Login</button>
-        </form>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, x: 30 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6 }}
-        style={styles.rightPanel}
-      >
-        <div style={styles.rightHeader}>
-          <img src="/ecotack logo.png" height={50} />
-          <img src="/Ellipse 1.png" height={50} />
-        </div>
-        <h1 style={styles.rightTitle}>EcoTrack ADMINISTRATOR Access</h1>
-        <p style={styles.missionTitle}>Our Mission</p>
-        <p style={styles.missionText}>
-          At EcoTrack, we are committed to empowering individuals and businesses with smart energy
-          solutions that promote efficiency, sustainability, and cost savings. By leveraging IoT technology
-          and real-time data tracking, we aim to help users monitor, manage, and reduce their energy
-          consumption for a more eco-friendly future.
-        </p>
-        <p style={styles.downloadTitle}>Download EcoTrack</p>
-        <div style={styles.downloadButtons}>
-          <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Play Store" height={40} />
-          <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store" height={40} />
-        </div>
-        <p style={styles.missionTitle}>Who We Are</p>
-        <p style={styles.missionText}>
-          EcoTrack is a cutting-edge energy management platform that integrates with smart plugs
-          and IoT-enabled devices to provide real-time energy tracking, analytics, and automation.
-          Whether you’re looking to optimize your electricity usage at home or manage multiple
-          appliances in a commercial space, EcoTrack gives you full control over your energy
-          consumption—anytime, anywhere.
-        </p>
-        <footer style={styles.footer}>2025 EcoTrack Development Team</footer>
-      </motion.div>
+            <button
+              type="submit"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded transition"
+            >
+              Login
+            </button>
+          </form>
+        </motion.div>
+      </div>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    display: 'flex',
-    width: '100%',
-    height: '100vh',
-    backgroundColor: '#EFFAF0',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'fixed',
-    left: 0,
-    top: 0,
-  },
-  leftPanel: {
-    flex: 1,
-    background: '#112F3E',
-    color: '#EFFAF0',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '5%',
-    height: '100%',
-  },
-  rightPanel: {
-    flex: 2,
-    padding: '5%',
-    textAlign: 'left',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100%',
-  },
-  rightHeader: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    width: '100%',
-    gap: '10px',
-  },
-  form: {
-    background: '#fff',
-    padding: '10%',
-    borderRadius: 10,
-    maxWidth: 300,
-    width: '100%',
-    textAlign: 'center',
-  },
-  formTitle: {
-    color: '#1A3C4D',
-    fontSize: '24px',
-    fontWeight: 'bold',
-  },
-  formSubtitle: {
-    color: '#1A3C4D',
-    fontSize: '15px',
-    fontStyle: 'italic',
-    textAlign: 'left',
-    marginBottom: '10px',
-  },
-  inputContainer: {
-    position: 'relative',
-    marginBottom: '20px',
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    backgroundColor: '#F0F9F0',
-    borderRadius: '6px',
-    paddingLeft: '16px',
-  },
-  icon: {
-    color: '#1A3C4D',
-    fontSize: '18px',
-    marginRight: '5px',
-    flexShrink: 0,
-  },
-  input: {
-    width: '100%',
-    padding: '14px 16px',
-    border: 'none',
-    borderRadius: '6px',
-    fontSize: '14px',
-    outline: 'none',
-    backgroundColor: 'transparent',
-    color: '#1A3C4D',
-  },
-  error: {
-    color: '#ff4d4d',
-    fontSize: '13px',
-    marginBottom: '10px',
-  },
-  button: {
-    width: '100%',
-    padding: 12,
-    backgroundColor: '#7AC17B',
-    border: 'none',
-    borderRadius: 5,
-    fontSize: 16,
-    cursor: 'pointer',
-    marginTop: 10,
-    color: '#fff',
-  },
-  footerRow: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    fontSize: '13px',
-    marginTop: 10,
-  },
-  rightTitle: {
-    color: '#1A3C4D',
-    fontSize: '28px',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    width: '100%',
-  },
-  missionTitle: {
-    fontWeight: 'bold',
-    textAlign: 'center',
-    width: '100%',
-  },
-  downloadTitle: {
-    fontWeight: 'bold',
-    textAlign: 'center',
-    width: '100%',
-  },
-  missionText: {
-    fontSize: '16px',
-    color: '#333',
-    textAlign: 'center',
-    marginBottom: 20,
-    width: '100%',
-  },
-  downloadButtons: {
-    display: 'flex',
-    gap: '10px',
-    justifyContent: 'center',
-    marginBottom: '20px',
-  },
-  footer: {
-    marginTop: 40,
-    fontSize: '12px',
-    color: '#555',
-    textAlign: 'center',
-    width: '100%',
-  },
 };
 
 export default Login;
