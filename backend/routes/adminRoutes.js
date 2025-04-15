@@ -5,7 +5,7 @@ const protect = require("../middleware/auth");
 
 const router = express.Router();
 
-router.post("/admin/login", adminLogin);
+router.post("/login", adminLogin);
 router.get("/users", protect, getUsers);
 
 module.exports = router;
