@@ -1,6 +1,6 @@
-import User from '../models/User.js';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
+const User = require('../models/User');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
 // 🔐 Utility to generate JWT
 const generateToken = (id) => {
@@ -10,7 +10,7 @@ const generateToken = (id) => {
 };
 
 // 🧾 Register
-export const registerUser = async (req, res) => {
+const registerUser = async (req, res) => {
   const { name, username, email, phone, password } = req.body;
 
   try {
@@ -40,8 +40,8 @@ export const registerUser = async (req, res) => {
   }
 };
 
-//  Login (with lastLogin & device tracking)
-export const loginUser = async (req, res) => {
+// 🔐 Login
+const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -51,7 +51,7 @@ export const loginUser = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
-    //  Track login
+    // Track login
     user.lastLogin = new Date();
     user.lastDevice = req.headers['user-agent'];
     await user.save();
@@ -69,8 +69,8 @@ export const loginUser = async (req, res) => {
   }
 };
 
-//  Get All Users
-export const getUsers = async (req, res) => {
+// 👥 Get All Users
+const getUsers = async (req, res) => {
   try {
     const users = await User.find().select('-password');
     res.json(users);
@@ -79,8 +79,8 @@ export const getUsers = async (req, res) => {
   }
 };
 
-//  Update
-export const updateUser = async (req, res) => {
+// ✏️ Update
+const updateUser = async (req, res) => {
   try {
     const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!user) return res.status(404).json({ message: 'User not found' });
@@ -90,8 +90,8 @@ export const updateUser = async (req, res) => {
   }
 };
 
-//  Delete
-export const deleteUser = async (req, res) => {
+// ❌ Delete
+const deleteUser = async (req, res) => {
   try {
     const deleted = await User.findByIdAndDelete(req.params.id);
     if (!deleted) return res.status(404).json({ message: 'User not found' });
@@ -99,4 +99,12 @@ export const deleteUser = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
+};
+
+module.exports = {
+  registerUser,
+  loginUser,
+  getUsers,
+  updateUser,
+  deleteUser,
 };

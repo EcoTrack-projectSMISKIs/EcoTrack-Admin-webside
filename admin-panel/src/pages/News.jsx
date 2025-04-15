@@ -56,167 +56,99 @@ const News = () => {
   const formatDate = (dateStr) => new Date(dateStr).toLocaleString();
 
   return (
-    <div style={{ padding: 32 }}>
-      <h2 style={{ fontSize: 26, fontWeight: "bold", marginBottom: 16, color: "#0f172a" }}>
-        News & Updates
-      </h2>
+    <div className="p-8">
+      <h2 className="text-2xl font-bold text-slate-900 mb-4">News & Updates</h2>
 
-      <div style={{ textAlign: "right", marginBottom: 20 }}>
+      <div className="text-right mb-6">
         <button
           onClick={() => {
             setShowModal(true);
             setFormData({ title: "", content: "", image: "" });
             setEditingNewsId(null);
           }}
-          style={{
-            backgroundColor: "#0ea5e9",
-            color: "#fff",
-            padding: "10px 16px",
-            borderRadius: "8px",
-            border: "none",
-            cursor: "pointer",
-            fontSize: "14px",
-          }}
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
         >
-          + Add News
+          Add News
         </button>
       </div>
 
-      {newsList.map((news) => (
-        <div key={news._id} style={{
-          background: "#fff",
-          borderRadius: "12px",
-          padding: "20px",
-          marginBottom: "20px",
-          boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-          gap: "24px"
-        }}>
-          <div style={{ flex: 1 }}>
-            <h3 style={{ margin: 0 }}>{news.title}</h3>
-            <p style={{ color: "#475569" }}>{news.content}</p>
+      <div className="space-y-6">
+        {newsList.map((news) => (
+          <div key={news._id} className="p-4 bg-white rounded shadow">
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="text-lg font-semibold text-gray-800">{news.title}</h3>
+              <span className="text-sm text-gray-500">{formatDate(news.createdAt)}</span>
+            </div>
+            <p className="text-gray-700 mb-2">{news.content}</p>
             {news.image && (
-              <img src={news.image} alt="News" style={{ maxWidth: "200px", borderRadius: "8px", marginTop: "10px" }} />
+              <img src={news.image} alt={news.title} className="w-full max-w-md rounded mb-2" />
             )}
-            <p style={{ fontSize: "12px", color: "#64748b", marginTop: "10px" }}>
-              Posted: {formatDate(news.createdAt)}
-            </p>
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-            <button onClick={() => openEdit(news)} style={styles.editBtn}>Edit</button>
-            <button onClick={() => handleDelete(news._id)} style={styles.deleteBtn}>Delete</button>
-          </div>
-        </div>
-      ))}
-
-      {showModal && (
-        <div style={styles.modalOverlay}>
-          <div style={styles.modal}>
-            <h3>{editingNewsId ? "Edit News" : "Add News"}</h3>
-            <input
-              type="text"
-              placeholder="Title"
-              value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              style={styles.input}
-            />
-            <textarea
-              placeholder="Content"
-              value={formData.content}
-              onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-              style={styles.textarea}
-            />
-            <input
-              type="text"
-              placeholder="Image URL (optional)"
-              value={formData.image}
-              onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-              style={styles.input}
-            />
-            <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
-              <button onClick={() => setShowModal(false)} style={styles.cancelBtn}>Cancel</button>
-              <button onClick={handleSubmit} style={styles.confirmBtn}>
-                {editingNewsId ? "Update" : "Post"}
+            <div className="flex gap-3">
+              <button
+                onClick={() => openEdit(news)}
+                className="px-4 py-1 bg-yellow-400 text-white rounded hover:bg-yellow-500 transition"
+              >
+                Edit
               </button>
+              <button
+                onClick={() => handleDelete(news._id)}
+                className="px-4 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg w-full max-w-lg shadow-lg">
+            <h3 className="text-xl font-bold text-gray-800 mb-4">
+              {editingNewsId ? "Edit News" : "Add News"}
+            </h3>
+            <div className="space-y-4">
+              <input
+                type="text"
+                placeholder="Title"
+                value={formData.title}
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                className="w-full border rounded px-3 py-2 outline-none"
+              />
+              <textarea
+                placeholder="Content"
+                value={formData.content}
+                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                className="w-full border rounded px-3 py-2 outline-none h-24 resize-none"
+              />
+              <input
+                type="text"
+                placeholder="Image URL"
+                value={formData.image}
+                onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                className="w-full border rounded px-3 py-2 outline-none"
+              />
+              <div className="flex justify-end gap-3">
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSubmit}
+                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+                >
+                  Save
+                </button>
+              </div>
             </div>
           </div>
         </div>
       )}
     </div>
   );
-};
-
-const styles = {
-  input: {
-    width: "100%",
-    padding: "10px",
-    marginBottom: "12px",
-    borderRadius: "6px",
-    border: "1px solid #ccc",
-    fontSize: "14px",
-  },
-  textarea: {
-    width: "100%",
-    padding: "10px",
-    marginBottom: "12px",
-    borderRadius: "6px",
-    border: "1px solid #ccc",
-    fontSize: "14px",
-    resize: "vertical",
-    minHeight: "100px",
-  },
-  editBtn: {
-    backgroundColor: "#3b82f6",
-    color: "white",
-    border: "none",
-    borderRadius: "6px",
-    padding: "6px 12px",
-    cursor: "pointer",
-  },
-  deleteBtn: {
-    backgroundColor: "#ef4444",
-    color: "white",
-    border: "none",
-    borderRadius: "6px",
-    padding: "6px 12px",
-    cursor: "pointer",
-  },
-  cancelBtn: {
-    backgroundColor: "#94a3b8",
-    color: "white",
-    border: "none",
-    borderRadius: "6px",
-    padding: "8px 14px",
-    cursor: "pointer",
-  },
-  confirmBtn: {
-    backgroundColor: "#0ea5e9",
-    color: "white",
-    border: "none",
-    borderRadius: "6px",
-    padding: "8px 14px",
-    cursor: "pointer",
-  },
-  modalOverlay: {
-    position: "fixed",
-    top: 0, left: 0,
-    width: "100%",
-    height: "100%",
-    backgroundColor: "rgba(0,0,0,0.4)",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  modal: {
-    backgroundColor: "#fff",
-    padding: "30px",
-    borderRadius: "12px",
-    width: "500px",
-    maxWidth: "90%",
-    boxShadow: "0 4px 16px rgba(0,0,0,0.1)",
-  },
 };
 
 export default News;

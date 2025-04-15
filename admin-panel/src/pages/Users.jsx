@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import {
-  Table, TableBody, TableCell, TableContainer,
-  TableHead, TableRow, Paper, Button, TextField, Typography, Box, Modal
-} from "@mui/material";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -66,102 +62,89 @@ const Users = () => {
   };
 
   return (
-    <Box sx={{ padding: "24px" }}>
-      <Typography variant="h4" gutterBottom fontWeight={600}>
-        User Management
-      </Typography>
+    <div className="p-8">
+      <h2 className="text-2xl font-bold text-slate-900 mb-4">User Management</h2>
 
-      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
-        <TextField
-          label="Search users..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          variant="outlined"
-          size="small"
-          sx={{ width: "300px" }}
-        />
-      </Box>
+      <input
+        type="text"
+        placeholder="Search users..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="mb-4 p-2 border rounded w-full max-w-md"
+      />
 
-      <TableContainer component={Paper} sx={{ borderRadius: 2, boxShadow: 3 }}>
-        <Table>
-          <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
-            <TableRow>
-              <TableCell><strong>Name</strong></TableCell>
-              <TableCell><strong>Email</strong></TableCell>
-              <TableCell><strong>Status</strong></TableCell>
-              <TableCell align="center"><strong>Actions</strong></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filteredUsers.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={4} align="center">
-                  <Typography variant="body1" sx={{ py: 2 }}>No users found.</Typography>
-                </TableCell>
-              </TableRow>
-            ) : (
-              filteredUsers.map((user) => (
-                <TableRow key={user._id} hover>
-                  <TableCell>{user.name || "—"}</TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.username ? "Active" : "Pending"}</TableCell>
-                  <TableCell align="center">
-                    <Button size="small" onClick={() => handleEdit(user)} sx={{ mr: 1 }} variant="outlined">Edit</Button>
-                    <Button size="small" color="error" onClick={() => handleDelete(user._id)} variant="outlined">
-                      Delete
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      {/* Edit form inline above the table */}
+      {editingUser && (
+        <div className="bg-blue-50 border border-blue-200 rounded p-4 mb-6">
+          <h3 className="text-lg font-semibold mb-2">Edit User</h3>
+          <div className="flex flex-col gap-4 md:flex-row md:items-center">
+            <input
+              type="text"
+              placeholder="Name"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              className="w-full md:w-1/3 p-2 border rounded"
+            />
+            <input
+              type="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              className="w-full md:w-1/3 p-2 border rounded"
+            />
+            <div className="flex gap-2">
+              <button
+                onClick={handleUpdate}
+                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              >
+                Save
+              </button>
+              <button
+                onClick={() => setEditingUser(null)}
+                className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
-      <Modal
-        open={!!editingUser}
-        onClose={() => setEditingUser(null)}
-        aria-labelledby="edit-user-modal"
-      >
-        <Box sx={modalStyles.box}>
-          <Typography id="edit-user-modal" variant="h6" gutterBottom>
-            Edit User
-          </Typography>
-          <TextField
-            label="Name"
-            fullWidth
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            sx={{ mb: 2 }}
-          />
-          <TextField
-            label="Email"
-            fullWidth
-            value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            sx={{ mb: 2 }}
-          />
-          <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }}>
-            <Button variant="contained" onClick={handleUpdate}>Update</Button>
-            <Button variant="outlined" color="error" onClick={() => setEditingUser(null)}>Cancel</Button>
-          </Box>
-        </Box>
-      </Modal>
-    </Box>
+      <div className="overflow-x-auto">
+        <table className="min-w-full text-left bg-white shadow rounded">
+          <thead className="bg-gray-100 text-gray-700 text-sm uppercase">
+            <tr>
+              <th className="px-4 py-3">Name</th>
+              <th className="px-4 py-3">Email</th>
+              <th className="px-4 py-3">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredUsers.map((user) => (
+              <tr key={user._id} className="border-t hover:bg-gray-50">
+                <td className="px-4 py-2">{user.name}</td>
+                <td className="px-4 py-2">{user.email}</td>
+                <td className="px-4 py-2 space-x-2">
+                  <button
+                    onClick={() => handleEdit(user)}
+                    className="px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(user._id)}
+                    className="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
-};
-
-const modalStyles = {
-  box: {
-    position: "absolute",
-    top: "50%", left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    backgroundColor: "white",
-    borderRadius: 2,
-    boxShadow: 24,
-    padding: 4,
-  }
 };
 
 export default Users;

@@ -7,24 +7,16 @@ const Settings = () => {
     if (confirm("Are you sure you want to logout?")) {
       localStorage.removeItem("token");
       navigate("/");
-      window.location.reload(); //reeecheck auth
+      window.location.reload(); // recheck auth
     }
   };
 
   return (
-    <div style={{ padding: "24px" }}>
-      <h2 style={{ fontSize: "28px", fontWeight: "bold", marginBottom: "16px" }}>Settings</h2>
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-4 text-slate-900">Settings</h2>
       <button
         onClick={handleLogout}
-        style={{
-          backgroundColor: "#f44336",
-          color: "#fff",
-          padding: "10px 20px",
-          borderRadius: "6px",
-          border: "none",
-          cursor: "pointer",
-          fontSize: "16px",
-        }}
+        className="bg-red-600 text-white px-6 py-2 rounded-md text-base hover:bg-red-700 transition"
       >
         Logout
       </button>

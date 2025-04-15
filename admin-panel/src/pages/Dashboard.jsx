@@ -50,56 +50,33 @@ const Dashboard = () => {
   ];
 
   return (
-    <div style={{ padding: "32px" }}>
-      <h2 style={{ fontSize: "26px", fontWeight: 700, color: "#0f172a", marginBottom: "24px" }}>
-        Dashboard Overview
-      </h2>
+    <div className="p-8">
+      <h2 className="text-2xl font-bold text-slate-900 mb-6">Dashboard Overview</h2>
 
-      <div style={{ display: "flex", gap: "24px", marginBottom: "40px" }}>
-        <div style={styles.statCard}>
-          <h4 style={styles.statLabel}>Total Users</h4>
-          <p style={styles.statValue}>{totalUsers}</p>
+      <div className="flex flex-wrap gap-6 mb-10">
+        <div className="flex-1 min-w-[200px] bg-white shadow rounded p-6">
+          <h4 className="text-sm text-gray-500 mb-1">Total Users</h4>
+          <p className="text-3xl font-semibold text-blue-700">{totalUsers}</p>
         </div>
-        <div style={styles.statCard}>
-          <h4 style={styles.statLabel}>Latest News Posts</h4>
-          <p style={styles.statValue}>{latestNews.length}</p>
+        <div className="flex-1 min-w-[200px] bg-white shadow rounded p-6">
+          <h4 className="text-sm text-gray-500 mb-1">Latest News Posts</h4>
+          <p className="text-3xl font-semibold text-blue-700">{latestNews.length}</p>
         </div>
       </div>
 
-      <div style={{ height: "320px", background: "#fff", padding: "24px", borderRadius: "12px", boxShadow: "0 2px 10px rgba(0,0,0,0.05)" }}>
-        <h3 style={{ marginBottom: "16px", fontSize: "18px", color: "#334155" }}>Activity Chart</h3>
+      <div className="h-80 bg-white shadow rounded p-4">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
-            <YAxis allowDecimals={false} />
+            <YAxis />
             <Tooltip />
-            <Bar dataKey="count" fill="#0ea5e9" radius={[6, 6, 0, 0]} />
+            <Bar dataKey="count" fill="#2563eb" />
           </BarChart>
         </ResponsiveContainer>
       </div>
     </div>
   );
-};
-
-const styles = {
-  statCard: {
-    flex: 1,
-    backgroundColor: "#f1f5f9",
-    borderRadius: "12px",
-    padding: "20px",
-    boxShadow: "0 1px 4px rgba(0,0,0,0.05)",
-  },
-  statLabel: {
-    fontSize: "16px",
-    color: "#64748b",
-    marginBottom: "8px",
-  },
-  statValue: {
-    fontSize: "32px",
-    fontWeight: "bold",
-    color: "#0f172a",
-  },
 };
 
 export default Dashboard;

@@ -3,64 +3,39 @@ import { Link, useLocation } from "react-router-dom";
 const Sidebar = () => {
   const location = useLocation();
 
-  const sidebarStyle = {
-    width: "240px",
-    background: "#10172a",
-    color: "#fff",
-    height: "100vh",
-    padding: "32px 20px",
-    boxSizing: "border-box",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  };
+  const isActive = (path) => location.pathname === path;
 
-  const navList = {
-    listStyle: "none",
-    padding: 0,
-    margin: 0,
-    display: "flex",
-    flexDirection: "column",
-    gap: "20px",
-  };
-
-  const navItem = (path) => ({
-    background: location.pathname === path ? "#1e293b" : "transparent",
-    borderRadius: "8px",
-    padding: "12px 16px",
-    transition: "0.3s",
-  });
-
-  const linkStyle = {
-    color: "#e2e8f0",
-    textDecoration: "none",
-    fontSize: "15px",
-    fontWeight: 500,
-    display: "block",
-  };
+  const navItems = [
+    { label: "Dashboard", path: "/dashboard" },
+    { label: "User Management", path: "/users" },
+    { label: "News & Updates", path: "/news" },
+    { label: "Settings", path: "/settings" },
+  ];
 
   return (
-    <aside style={sidebarStyle}>
+    <aside className="w-60 min-h-screen bg-[#10172a] text-white flex flex-col justify-between px-5 py-8">
       <div>
-        <h2 style={{ fontSize: "20px", marginBottom: "32px", color: "#38bdf8" }}>
+        <h2 className="text-xl font-semibold text-cyan-400 mb-8 tracking-wide">
           ⚡ EcoTrack Admin
         </h2>
-        <ul style={navList}>
-          <li style={navItem("/dashboard")}>
-            <Link to="/dashboard" style={linkStyle}>Dashboard</Link>
-          </li>
-          <li style={navItem("/users")}>
-            <Link to="/users" style={linkStyle}>User Management</Link>
-          </li>
-          <li style={navItem("/news")}>
-            <Link to="/news" style={linkStyle}>News & Updates</Link>
-          </li>
-          <li style={navItem("/settings")}>
-            <Link to="/settings" style={linkStyle}>Settings</Link>
-          </li>
+        <ul className="flex flex-col gap-4">
+          {navItems.map((item) => (
+            <li key={item.path}>
+              <Link
+                to={item.path}
+                className={`block px-4 py-3 rounded-lg font-medium text-sm transition duration-200 ${
+                  isActive(item.path)
+                    ? "bg-slate-800 text-white"
+                    : "text-slate-300 hover:bg-slate-700 hover:text-white"
+                }`}
+              >
+                {item.label}
+              </Link>
+            </li>
+          ))}
         </ul>
       </div>
-      <p style={{ fontSize: "12px", color: "#64748b" }}>© 2025 EcoTrack</p>
+      <p className="text-xs text-slate-500">© 2025 EcoTrack</p>
     </aside>
   );
 };

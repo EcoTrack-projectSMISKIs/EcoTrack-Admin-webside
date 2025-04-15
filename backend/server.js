@@ -1,25 +1,22 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import adminRoutes from './routes/adminRoutes.js';
-import newsRoutes from "./routes/newsRoutes.js";
-import userRoutes from "./routes/userRoutes.js";
+const express = require("express");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const connectDB = require("./config/db");
+
+const userRoutes = require("./routes/userRoutes");
+const adminRoutes = require("./routes/adminRoutes");
+const newsRoutes = require("./routes/newsRoutes");
 
 dotenv.config();
+connectDB();
+
 const app = express();
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
 
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log(err));
-
-app.use('/api', adminRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/admin", adminRoutes);
 app.use("/api/news", newsRoutes);
-app.use("/api/users", userRoutes); 
 
 const PORT = process.env.PORT || 5003;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
