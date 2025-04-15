@@ -1,4 +1,4 @@
-# ⚙ EcoTrack Backend – CommonJS Version
+#  EcoTrack Backend – CommonJS Version
 
 This is the backend server for the EcoTrack Admin Panel, converted from ESM to CommonJS for wider compatibility.
 
