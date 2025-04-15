@@ -1,25 +1,29 @@
-// src/App.jsx
-import { useState } from 'react';
-import Sidebar from './components/Sidebar';
-import Dashboard from './components/Dashboard';
-import Users from './components/Users';
+import { useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import Sidebar from "./components/Sidebar";
+import Dashboard from "./pages/Dashboard";
+import News from "./pages/News";
+import Users from "./pages/Users";
+import Settings from "./pages/Settings";
+import Login from "./pages/Login";
 
 function App() {
-  const [section, setSection] = useState("dashboard");
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
 
-  const renderSection = () => {
-    switch (section) {
-      case "dashboard": return <Dashboard />;
-      case "users": return <Users />;
-      default: return <h2 style={{ padding: "20px" }}>Coming Soon</h2>;
-    }
-  };
+  if (!isAuthenticated) {
+    return <Login setIsAuthenticated={setIsAuthenticated} />;
+  }
 
   return (
-    <div className="dashboard-container">
-      <Sidebar onSectionChange={setSection} />
-      <main className="main-content">
-        {renderSection()}
+    <div style={{ display: "flex", height: "100vh", backgroundColor: "#f1f5f9", fontFamily: "Segoe UI, sans-serif" }}>
+      <Sidebar />
+      <main style={{ flex: 1, overflowY: "auto", padding: "32px" }}>
+        <Routes>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/news" element={<News />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/settings" element={<Settings />} />
+        </Routes>
       </main>
     </div>
   );

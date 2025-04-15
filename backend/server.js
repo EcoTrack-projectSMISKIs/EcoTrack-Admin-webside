@@ -1,43 +1,22 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import cors from 'cors';
-import dotenv from 'dotenv';
+const express = require("express");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const connectDB = require("./config/db");
 
-// Load environment variables
+const userRoutes = require("./routes/userRoutes");
+const adminRoutes = require("./routes/adminRoutes");
+const newsRoutes = require("./routes/newsRoutes");
+
 dotenv.config();
+connectDB();
 
 const app = express();
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log(err));
+app.use("/api/users", userRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/news", newsRoutes);
 
-// Define User Schema
-const UserSchema = new mongoose.Schema({
-   name: { type: String, required: true },
-   username: { type: String, required: true, unique: true },
-   phone: { type: String, required: true, unique: true },
-   email: { type: String, required: true, unique: true },
-   password: { type: String, required: true }
-}, { timestamps: true });
-
-const User = mongoose.model('User', UserSchema);
-
-// Route to fetch all users
-app.get('/api/users', async (req, res) => {
-  try {
-    const users = await User.find();
-    res.json(users);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-// Start server
 const PORT = process.env.PORT || 5003;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
