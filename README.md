@@ -1,114 +1,100 @@
-#  EcoTrack Admin
+#  EcoTrack Admin Website (BATELEC I)
 
-A React + Vite-powered admin dashboard for managing users, news, and monitoring smart energy data for EcoTrack. Built with Tailwind CSS, Recharts, and Axios.
-(asis)
-
----
-
-##  Tech
-
--  **React** (Vite)
--  **Tailwind CSS**
--  **Recharts** – for bar chart visualization
--  **Axios** – for API calls
--  **React Router DOM** – for routing
+EcoTrack is a smart energy management system developed for **BATELEC I** (Batangas I Electric Cooperative, Inc.). This repository contains the full stack source code for the **Admin Web Panel**, enabling management of users, energy tracking reports, and news updates.
 
 ---
 
-##  Getting Started
+##  Monorepo Structure
 
-### 1. **Clone the repository**
+```
+EcoTrack-Admin-webside/
+├── admin-panel/    # Frontend - React + Vite + Tailwind
+├── backend/        # Backend - Node.js + Express + MongoDB (CommonJS)
+```
+
+---
+
+##  Tech Overview
+
+| Layer      | Stack                                         |
+|------------|-----------------------------------------------|
+| Frontend   | React + Vite + Tailwind CSS                   |
+| Backend    | Node.js + Express + MongoDB + JWT             |
+| Charts     | Recharts (for dashboard analytics)            |
+| Styling    | Tailwind CSS (utility-first)                  |
+| Auth       | JWT (admin login + protected routes)          |
+| DB         | MongoDB (Mongoose models)                     |
+
+---
+
+##  Quick Start
+
+### 1. Clone the project
 
 ```bash
 git clone https://github.com/EcoTrack-projectSMISKIs/EcoTrack-Admin-webside.git
 cd EcoTrack-Admin-webside
 ```
 
-### 2. **Install dependencies**
+---
+
+### 2. Set up Backend
 
 ```bash
+cd backend
 npm install
 ```
 
-This will install all required packages including:
-- `tailwindcss`
-- `postcss`
-- `autoprefixer`
-- `recharts`
-- `axios`
-- `react-router-dom`
+Create a `.env` file:
 
----
+```env
+PORT=5003
+MONGO_URI=your_mongodb_uri
+JWT_SECRET=your_secret_key
+```
 
-##  Development
-
-To run the app locally:
+Run the backend:
 
 ```bash
+node server.js
+```
+
+---
+
+### 3. Set up Frontend
+
+```bash
+cd ../admin-panel
+npm install
 npm run dev
-```
-
-The app will be available at [http://localhost:5173](http://localhost:5173)
-
----
-
-## ⚙ Tailwind CSS Setup
-
-Tailwind is already configured in:
-
-- `tailwind.config.js`
-- `postcss.config.js`
-- `src/index.css`
-
-You can start using utility classes immediately across your JSX files.
-
----
-
-##  Recharts Usage
-
-We use Recharts for visualizing simple analytics in the Dashboard page:
-
-```jsx
-import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
-} from "recharts";
-```
-
----
-
-##  Authentication
-
-Admin login is handled via JWT token:
-- Stored in `localStorage`
-- Sent via `Authorization` headers in requests
-
----
-
-##  Folder Structure
-
-```
-src/
-├── assets/          # static images, logos
-├── components/      # reusable UI components (Sidebar, SectionWrapper, etc.)
-├── pages/           # route pages (Dashboard, Users, News, Settings, Login)
-├── index.css        # Tailwind directives
-├── main.jsx         # entry point
 ```
 
 ---
 
 ##  Features
 
--  Admin user login with token-based auth
--  User management with inline edit/delete
--  News management with create/edit/delete
--  Dashboard with live chart data
--  Fully responsive and built with Tailwind CSS
+-  Admin login with JWT authentication
+-  Full user CRUD (create, update, delete)
+-  News and announcements management
+-  Dashboard with real-time bar chart data
+-  Fully responsive and mobile-friendly UI
+-  Auth-protected API endpoints
+-  MongoDB with Mongoose schemas
 
 ---
 
-##  Credits
+##  Folder Breakdown
 
-Built by the EcoTrack Backend Team.
+- `admin-panel/` – React-based frontend
+- `backend/` – Node.js/Express REST API
+- `.env` – Secret config file for backend (excluded from repo)
 
+---
 
+##  Developer Notes
+
+- Backend was refactored to **CommonJS** for compatibility and advised of our adviser
+- Frontend is styled fully with **Tailwind CSS**
+- Recharts used for elegant data visualization
+
+---
