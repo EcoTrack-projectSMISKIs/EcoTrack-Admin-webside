@@ -107,12 +107,12 @@ src/
 
 ---
 
-## 💡 Credits
+##  Credits
 
 Built by the EcoTrack Backend Team.
 
 ---
 
-## 📜 License
+##  License
 
 This project is licensed under [MIT](LICENSE).
