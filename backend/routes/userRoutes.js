@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
-router.get("/users", protect, getUsers);
+router.get("/", protect, getUsers);
 router.put("/:id", updateUser);       // fix
 router.delete("/:id", deleteUser);    // fix
 
