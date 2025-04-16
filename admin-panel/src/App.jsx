@@ -6,6 +6,8 @@ import News from "./pages/News";
 import Users from "./pages/Users";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
+import AdminManagement from "./pages/AdminManagement"; // new
+import Forbidden from "./pages/Forbidden"; // import it
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
@@ -23,6 +25,9 @@ function App() {
           <Route path="/news" element={<News />} />
           <Route path="/users" element={<Users />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/admin-management" element={<AdminManagement />} />
+          <Route path="/forbidden" element={<Forbidden />} /> {/*  added */}
+
         </Routes>
       </main>
     </div>

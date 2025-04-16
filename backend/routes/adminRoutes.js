@@ -4,6 +4,9 @@ const {
   getAdminProfile,
   updateAdminProfile,
   createAdmin, // new added route
+  getAllAdmins, // view all admins
+  deleteAdmin, // delete an admin by ID
+  updateAdminById, // new
 } = require("../controllers/adminController");
 const { getUsers } = require("../controllers/userController");
 const protect = require("../middleware/auth");
@@ -19,4 +22,11 @@ router.put("/profile", protect, updateAdminProfile);
 
 router.post("/create", protect, createAdmin); //  new added route
 
+//
+router.get("/all", protect, getAllAdmins); // view all admins
+router.delete("/:id", protect, deleteAdmin); // delete an admin by ID
+//
+//  // new
+router.put("/:id", protect, updateAdminById);
+// update an admin by ID
 module.exports = router;
