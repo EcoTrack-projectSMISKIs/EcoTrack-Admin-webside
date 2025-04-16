@@ -79,10 +79,69 @@ const createAdmin = async (req, res) => {
 
 //
 
+// new added 2
+
+const getAllAdmins = async (req, res) => {
+  try {
+    if (req.user.role !== "superadmin") {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    const admins = await Admin.find().select("-password");
+    res.json(admins);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+const deleteAdmin = async (req, res) => {
+  try {
+    if (req.user.role !== "superadmin") {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    const admin = await Admin.findById(req.params.id);
+    if (!admin) return res.status(404).json({ message: "Admin not found" });
+
+    await admin.deleteOne();
+    res.json({ message: "Admin deleted" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// update admins
+const updateAdminById = async (req, res) => {
+  try {
+    if (req.user.role !== "superadmin") {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    const admin = await Admin.findById(req.params.id);
+    if (!admin) return res.status(404).json({ message: "Admin not found" });
+
+    if (admin.role === "superadmin") {
+      return res.status(403).json({ message: "Cannot modify superadmin" });
+    }
+
+    admin.name = req.body.name || admin.name;
+    admin.email = req.body.email || admin.email;
+
+    await admin.save();
+    res.json({ message: "Admin updated successfully" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
 module.exports = {
   adminLogin,
   getAdminProfile,
   updateAdminProfile,
   createAdmin, // added
+  getAllAdmins, // added 2
+  deleteAdmin, // added 2
+  updateAdminById, // new
 };
 
