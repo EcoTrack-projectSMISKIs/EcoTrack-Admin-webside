@@ -96,5 +96,6 @@ npm run dev
 - Backend was refactored to **CommonJS** for compatibility and advised of our adviser
 - Frontend is styled fully with **Tailwind CSS**
 - Recharts used for elegant data visualization
+- if chatpgt cant debug it, ask luis
 
 ---
